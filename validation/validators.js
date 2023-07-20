@@ -15,8 +15,21 @@ async function validateEquipment(equipmentList, fieldMap, errors) {
 
 function validateColumns(equipmentList, fieldMap, errors) {
 
-    let headers = Object.keys(equipmentList[0])
+    // TASK 1: register a new error if an unknown field is present in the equipment list
+    // EquipmentList has not been validated yet, there could be an issue with getting the headers from the first item in the list - eg, the first item has errors.
+    // The headers array should be taken from the fieldMap object, for example:
+    
+    let headers = Array.from(fieldMap.keys()); // This will however, cause the headers to be defined in a different order
+    
+    // let headers = Object.keys(equipmentList[0]) <- Old code commented out
 
+    // Now we can check if the fields in the equipmentList match the known headers in the fieldMap
+    Object.keys(equipmentList[0]).forEach(header => {
+       !headers.includes(header) &&
+       errors.push(new lineError("Unknown header in equipment_list.csv", header, '0'));
+    });
+
+    // This function still works correctly with the new headers definition as it uses object keys for fieldMap
     for (col = 0; col < headers.length; col++) {
         let field = fieldMap.get(headers[col]);
         if (field) {
@@ -36,12 +49,13 @@ function validateColumns(equipmentList, fieldMap, errors) {
 
 
 function validateData(equipmentList, fieldMap, errors) {
-
+    let counter = 2;
     for (let equipment of equipmentList) {
-
-        let counter = 2
-
+        // TASK 2: 
+        // the counter variable keeps getting redeclared on each iteration of the loop
+        //let counter = 2;
         for (const item of fieldMap[Symbol.iterator]()) {
+
 
             let column = item[0];
             let vStr = item[1].validationString;
@@ -50,7 +64,6 @@ function validateData(equipmentList, fieldMap, errors) {
             if (!vStr) {
                 continue;
             }
-
 
             let reg = new RegExp(vStr)
 
@@ -103,8 +116,10 @@ function validateUniqueKeys(equipmentList, fieldMap, errors) {
 
         key = key.toLocaleLowerCase().replace(/\s/g, '');
         keyStrings.push({ key, counter });
+        // TASK 2: Counter error
+        counter++
     }
-    counter++
+
 
     // Filter just duplicates
     const duplicates = keyStrings.filter((key, index, self) =>

@@ -2,12 +2,15 @@ let project = /\b\d{4}\b/;
 let notEmpty = /^.{1,255}$/;
 let testCodes = /((^|[, ])[A-Za-z]{1,3}[0-9]{4})+$/;
 
+// TASK 3
+let noAmpersand = /^[^&]*$/;
+
 const equipmentMap = new Map();
 
 equipmentMap.set('Project', { colIndex: null, isRequired: true, validationString: project, uniqueKeyID: 1, maxLength: null })
 equipmentMap.set('Item No.', { colIndex: null, isRequired: false, validationString: null, uniqueKeyID: null, maxLength: null })
-equipmentMap.set('PLU', { colIndex: null, isRequired: true, validationString: notEmpty, uniqueKeyID: null, maxLength: 50 })
-equipmentMap.set('Subsystem', { colIndex: null, isRequired: true, validationString: notEmpty, uniqueKeyID: null, maxLength: 50 })
+equipmentMap.set('PLU', { colIndex: null, isRequired: true, validationString: noAmpersand, uniqueKeyID: null, maxLength: 50 })
+equipmentMap.set('Subsystem', { colIndex: null, isRequired: true, validationString: noAmpersand, uniqueKeyID: null, maxLength: 50 })
 equipmentMap.set('Parent Equipment Number', { colIndex: null, isRequired: false, validationString: notEmpty, uniqueKeyID: null, maxLength: 100})
 equipmentMap.set('Equipment Number', { colIndex: null, isRequired: true, validationString: notEmpty, uniqueKeyID: 1, maxLength: 100 })
 equipmentMap.set('Update To', { colIndex: null, isRequired: false, validationString: notEmpty, uniqueKeyID: 1, maxLength: 100 })

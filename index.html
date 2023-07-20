@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Equipment List Validation Errors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px;
+      padding: 10px;
+      background-color: #ffdddd;
+      border: 1px solid #ff9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Equipment List Validation Errors</h1>
+  <ul id="error-list"></ul>
+
+  <script>
+    fetch('http://localhost:3000/equipment-list')
+      .then(response => response.json())
+      .then(errors => {
+        const errorList = document.getElementById('error-list');
+        errors.forEach(error => {
+          const listItem = document.createElement('li');
+
+          // Create separate elements for error message and value
+          const boldLine = document.createElement('b');
+          boldLine.textContent = `Error on line ${error.line}: ${error.message}`;
+          const italicLine = document.createElement('i');
+          italicLine.textContent = `Value: "${error.value}"`;
+            const newLine  = document.createElement('br');
+          // Append both lines to the list item
+          listItem.appendChild(boldLine);
+          listItem.appendChild(newLine);
+          listItem.appendChild(italicLine);
+
+          // Append the list item to the error list
+          errorList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  </script>
+</body>
+</html>
